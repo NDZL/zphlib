@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+/*
+plugins {
+    alias(libs.plugins.androidLibrary)
+    id 'kotlin-android'
+    id 'maven-publish'
+}
+*/
+
+android {
+    namespace 'com.ndzl.zphlib'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 27
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+//https://jitpack.io/com/github/NDZL/zphlibtester/1.0.1/zphlibtester-1.0.1.pom.sha1
+//https://jitpack.io/com/github/NDZL/zphlibtester/1.0.1/build.log
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.ndzl'
+            artifactId = 'zphlib'
+            version = '1.0.1'
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+}
